@@ -1,11 +1,12 @@
 {
 	"name": "layouter-tools",
-	"version": "0.0.01",
+	"version": "0.0.04",
 	"private": false,
 	"main": "dist/index.tsx",
 	"module": "dist/index.tsx",
 	"dependencies": {
 		"@babel/polyfill": "^7.12.1",
+		"@sanity/client": "^3.2.2",
 		"@testing-library/jest-dom": "^5.16.2",
 		"@testing-library/react": "^12.1.4",
 		"@testing-library/user-event": "^13.5.0",
@@ -16,12 +17,13 @@
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-scripts": "5.0.0",
+		"redux": "^4.1.2",
 		"typescript": "^4.6.2",
 		"web-vitals": "^2.1.4"
 	},
 	"scripts": {
 		"start": "react-scripts start",
-		"build": "rm -rf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files",
+		"build": "del -y dist && cross-env cross-env NODE_ENV=production babel src/lib --out-dir dist --copy-files",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject"
 	},
@@ -46,6 +48,7 @@
 	"devDependencies": {
 		"@babel/cli": "^7.17.6",
 		"@babel/core": "^7.17.8",
-		"@babel/preset-env": "^7.16.11"
+		"@babel/preset-env": "^7.16.11",
+		"cross-env": "^7.0.3"
 	}
 }
