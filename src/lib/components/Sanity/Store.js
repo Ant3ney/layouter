@@ -1,7 +1,7 @@
 import { createStore } from 'redux';
 import CreateSanityClient from './createSanityClient';
 
-function reducer(state: any = {}, newState: any) {
+function reducer(state = {}, newState) {
 	switch (newState.type) {
 		case 'update client':
 			state.client = newState.client;

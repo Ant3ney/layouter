@@ -1,6 +1,6 @@
 const sanityClient = require('@sanity/client');
 
-function CreateSanityClient(PUBLIC_API_KEY: string) {
+function CreateSanityClient(PUBLIC_API_KEY) {
 	return sanityClient({
 		projectId: PUBLIC_API_KEY,
 		dataset: 'production',
