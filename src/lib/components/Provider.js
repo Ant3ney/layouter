@@ -1,16 +1,15 @@
 import React, { createContext, useEffect, useState, useRef } from 'react';
 import routeStore from './routeStore';
-import { sanityStore } from './Sanity';
-import { queryMainNav, queryCurrentRoute } from './Sanity/querys';
+import { sanityStore, queryMainNav, queryCurrentRoute } from './Sanity';
 import { useHasChanged } from './utilities';
 export const layouterContext = createContext(null);
 export default function LayouterProvider({ children, options }) {
-	const { PUBLIC_API_KEY } = options;
+	const { PUBLIC_API_KEY, Loading } = options;
 	const [currentRoute, setCurrentRoute] = useState(routeStore.getState().currentLocation);
 	const [client, setClient] = useState(sanityStore.getState() ? sanityStore.getState().client : null);
 	const [bodyKeys, setBodyKeys] = useState(null);
 	const [queriedBodyData, setQueriedBodyData] = useState();
-	const [publicAPIKey, setPublicAPIKey] = useState(PUBLIC_API_KEY);
+	const [nav, setNav] = useState();
 	let hasPathChanged = useHasChanged(currentRoute);
 
 	useEffect(() => {
@@ -22,9 +21,10 @@ export default function LayouterProvider({ children, options }) {
 		};
 	}, [client]);
 	useEffect(() => {
-		const unsubSanityStore = sanityStore.subscribe(() => {
+		const unsubSanityStore = sanityStore.subscribe(async () => {
 			if (sanityStore.getState().client) {
-				queryMainNav();
+				const navData = await queryMainNav();
+				setNav(navData);
 			}
 		});
 		sanityStore.dispatch({ type: 'update client via PUBLIC_API_KEY', PUBLIC_API_KEY });
@@ -32,6 +32,8 @@ export default function LayouterProvider({ children, options }) {
 			unsubSanityStore();
 		};
 	}, []);
+
+	//Keeps state route up to date with store route
 	useEffect(() => {
 		const unsubRoute = routeStore.subscribe(() => {
 			setCurrentRoute(routeStore.getState().currentLocation);
@@ -44,14 +46,17 @@ export default function LayouterProvider({ children, options }) {
 
 	useEffect(() => {
 		if (hasPathChanged) {
-			queryCurrentRoute(currentRoute);
-			setQueriedBodyData();
-			console.log('Route change detected');
+			(async () => {
+				const routeData = await queryCurrentRoute(currentRoute);
+				console.log('routeData', routeData);
+				setQueriedBodyData(routeData);
+			})();
 		}
 	}, [hasPathChanged, currentRoute]);
 
 	if (!sanityStore.getState()) {
-		return <div>Loading</div>;
+		if (Loading) return <Loading />;
+		else return <div>Loading</div>;
 	}
 
 	const value = { client, options };

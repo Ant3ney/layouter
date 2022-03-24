@@ -1,27 +1,36 @@
 import sanityStore from '../Store';
 
-export const queryMainNav = currentRoute => {
-	const client = sanityStore.getState().client;
+export const queryMainNav = () => {
 	const query = '*[_type == "mainNav"] {..., leftNavMenu->{..., navItems[]->}, rightNavMenu->{..., navItems[]->}}';
-
-	if (client)
-		client.fetch(query).then(mainNavs => {
-			mainNavs.forEach(mainNav => {
-				console.log(mainNav);
-			});
-		});
-	return client;
+	return standardQueryRunner(query, { noArray: true });
 };
 
 export const queryCurrentRoute = currentRoute => {
-	const client = sanityStore.getState().client;
-	const query = '*[_type == "mainNav"] {..., leftNavMenu->{..., navItems[]->}, rightNavMenu->{..., navItems[]->}}';
+	if (currentRoute === '/') return queryHomePage();
+	const formatedRoute = currentRoute.split('/')[1];
 
-	if (client)
-		client.fetch(query).then(mainNavs => {
-			mainNavs.forEach(mainNav => {
-				console.log(mainNav);
-			});
-		});
-	return client;
+	const query = `*[_type == "page" && slug.current == "${formatedRoute}"] {...}`;
+	return standardQueryRunner(query, { noArray: true });
 };
+
+export const queryHomePage = currentRoute => {
+	const query = '*[_type == "homePage"] {..., homePage->}';
+	return standardQueryRunner(query, { noArray: true });
+};
+
+function standardQueryRunner(query, settings) {
+	const client = sanityStore.getState().client;
+	return new Promise((res, rej) => {
+		if (client)
+			client
+				.fetch(query)
+				.then(response => {
+					if (settings.noArray) res(response[0]);
+					else res(response);
+				})
+				.catch(err => {
+					rej(err);
+				});
+		else rej({ message: 'Sanity client was not defined in query funtion' });
+	});
+}
