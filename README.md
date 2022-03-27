@@ -33,7 +33,7 @@ export default App;
 ```javascript
 function App() {
 	const layouterToolsOptions = {
-		PUBLIC_API_KEY: 'bjwi19ta',
+		PUBLIC_API_KEY: '******',
 	};
 	return (
 		<div className='App'>
@@ -57,7 +57,7 @@ import { Provider, Body } from 'layouter-tools';
 
 function App() {
 	const layouterToolsOptions = {
-		PUBLIC_API_KEY: 'bjwi19ta',
+		PUBLIC_API_KEY: '******',
 	};
 	return (
 		<div className='App'>

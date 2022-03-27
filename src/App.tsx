@@ -18,6 +18,12 @@ function App() {
 				section: 'funnelItem01Section',
 				component: FunnelItem01,
 			},
+			{
+				section: 'shopDisplaySection',
+				component: () => {
+					return <div>This is the shop section</div>;
+				},
+			},
 		],
 	};
 	return (
