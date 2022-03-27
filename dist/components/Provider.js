@@ -8,15 +8,15 @@ exports.layouterContext = void 0;
 
 require("core-js/modules/web.dom-collections.iterator.js");
 
+require("core-js/modules/es.promise.js");
+
 var _react = _interopRequireWildcard(require("react"));
 
 var _routeStore = _interopRequireDefault(require("./routeStore"));
 
 var _Sanity = require("./Sanity");
 
-var _queryRoute = _interopRequireDefault(require("./Sanity/queryRoute"));
-
-var _URL_to_map_keys = _interopRequireDefault(require("./Sanity/URL_to_map_keys"));
+var _utilities = require("./utilities");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -33,12 +33,15 @@ function LayouterProvider(_ref) {
     options
   } = _ref;
   const {
-    PUBLIC_API_KEY
+    PUBLIC_API_KEY,
+    Loading
   } = options;
   const [currentRoute, setCurrentRoute] = (0, _react.useState)(_routeStore.default.getState().currentLocation);
   const [client, setClient] = (0, _react.useState)(_Sanity.sanityStore.getState() ? _Sanity.sanityStore.getState().client : null);
   const [bodyKeys, setBodyKeys] = (0, _react.useState)(null);
-  let hasPathChanged = useHasChanged(currentRoute);
+  const [queriedBodyData, setQueriedBodyData] = (0, _react.useState)();
+  const [nav, setNav] = (0, _react.useState)();
+  let hasPathChanged = (0, _utilities.useHasChanged)(currentRoute);
   (0, _react.useEffect)(() => {
     const unsubClient = _Sanity.sanityStore.subscribe(() => {
       setClient(_Sanity.sanityStore.getState().client);
@@ -49,11 +52,23 @@ function LayouterProvider(_ref) {
     };
   }, [client]);
   (0, _react.useEffect)(() => {
+    const unsubSanityStore = _Sanity.sanityStore.subscribe(async () => {
+      if (_Sanity.sanityStore.getState().client) {
+        const navData = await (0, _Sanity.queryMainNav)();
+        setNav(navData);
+      }
+    });
+
     _Sanity.sanityStore.dispatch({
       type: 'update client via PUBLIC_API_KEY',
       PUBLIC_API_KEY
     });
-  }, []);
+
+    return () => {
+      unsubSanityStore();
+    };
+  }, []); //Keeps state route up to date with store route
+
   (0, _react.useEffect)(() => {
     const unsubRoute = _routeStore.default.subscribe(() => {
       setCurrentRoute(_routeStore.default.getState().currentLocation);
@@ -65,33 +80,22 @@ function LayouterProvider(_ref) {
   }, [currentRoute]);
   (0, _react.useEffect)(() => {
     if (hasPathChanged) {
-      console.log('Route change detected');
-      console.log((0, _queryRoute.default)(currentRoute));
+      (async () => {
+        const routeData = await (0, _Sanity.queryCurrentRoute)(currentRoute);
+        console.log('routeData', routeData);
+        setQueriedBodyData(routeData);
+      })();
     }
   }, [hasPathChanged, currentRoute]);
 
   if (!_Sanity.sanityStore.getState()) {
-    return /*#__PURE__*/_react.default.createElement("div", null, "Loading");
+    if (Loading) return /*#__PURE__*/_react.default.createElement(Loading, null);else return /*#__PURE__*/_react.default.createElement("div", null, "Loading");
   }
 
   const value = {
     client,
     options
   };
-
-  function useHasChanged(val) {
-    const prevVal = usePrevious(val);
-    return prevVal !== val;
-  }
-
-  function usePrevious(value) {
-    const ref = (0, _react.useRef)();
-    (0, _react.useEffect)(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  }
-
   return /*#__PURE__*/_react.default.createElement(layouterContext.Provider, {
     value: value
   }, children);

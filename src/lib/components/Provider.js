@@ -1,6 +1,6 @@
 import React, { createContext, useEffect, useState, useRef } from 'react';
 import routeStore from './routeStore';
-import { sanityStore, queryMainNav, queryCurrentRoute } from './Sanity';
+import { sanityStore, queryMainNav, queryCurrentRoute, QueryFormater } from './Sanity';
 import { useHasChanged } from './utilities';
 export const layouterContext = createContext(null);
 export default function LayouterProvider({ children, options }) {
@@ -10,6 +10,7 @@ export default function LayouterProvider({ children, options }) {
 	const [bodyKeys, setBodyKeys] = useState(null);
 	const [queriedBodyData, setQueriedBodyData] = useState();
 	const [nav, setNav] = useState();
+	const [currentSections, setCurrentSections] = useState();
 	let hasPathChanged = useHasChanged(currentRoute);
 
 	useEffect(() => {
@@ -47,8 +48,10 @@ export default function LayouterProvider({ children, options }) {
 	useEffect(() => {
 		if (hasPathChanged) {
 			(async () => {
-				const routeData = await queryCurrentRoute(currentRoute);
-				console.log('routeData', routeData);
+				const queryFormater = new QueryFormater();
+				const routeData = (await queryFormater.queryCurrentRoute()).getCurrentRouteData();
+				const sectionsData = queryFormater.getCurrentRouteSectionArray();
+				setCurrentSections(sectionsData);
 				setQueriedBodyData(routeData);
 			})();
 		}
@@ -59,7 +62,7 @@ export default function LayouterProvider({ children, options }) {
 		else return <div>Loading</div>;
 	}
 
-	const value = { client, options };
+	const value = { client, options, currentSections };
 
 	return <layouterContext.Provider value={value}>{children}</layouterContext.Provider>;
 }
