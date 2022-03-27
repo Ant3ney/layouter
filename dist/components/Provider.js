@@ -41,7 +41,11 @@ function LayouterProvider(_ref) {
   const [bodyKeys, setBodyKeys] = (0, _react.useState)(null);
   const [queriedBodyData, setQueriedBodyData] = (0, _react.useState)();
   const [nav, setNav] = (0, _react.useState)();
+  const [currentSections, setCurrentSections] = (0, _react.useState)();
   let hasPathChanged = (0, _utilities.useHasChanged)(currentRoute);
+  /* This is a React Hook that subscribes to the `sanityStore` and sets the `client` state to the
+  `sanityStore`'s `client` state. */
+
   (0, _react.useEffect)(() => {
     const unsubClient = _Sanity.sanityStore.subscribe(() => {
       setClient(_Sanity.sanityStore.getState().client);
@@ -53,6 +57,7 @@ function LayouterProvider(_ref) {
   }, [client]);
   (0, _react.useEffect)(() => {
     const unsubSanityStore = _Sanity.sanityStore.subscribe(async () => {
+      /* Run inital setters in ths context */
       if (_Sanity.sanityStore.getState().client) {
         const navData = await (0, _Sanity.queryMainNav)();
         setNav(navData);
@@ -67,7 +72,7 @@ function LayouterProvider(_ref) {
     return () => {
       unsubSanityStore();
     };
-  }, []); //Keeps state route up to date with store route
+  }, []); //Syncs route state to store
 
   (0, _react.useEffect)(() => {
     const unsubRoute = _routeStore.default.subscribe(() => {
@@ -78,15 +83,19 @@ function LayouterProvider(_ref) {
       unsubRoute();
     };
   }, [currentRoute]);
+  /* Route Dependencys syncronization */
+
   (0, _react.useEffect)(() => {
     if (hasPathChanged) {
       (async () => {
-        const routeData = await (0, _Sanity.queryCurrentRoute)(currentRoute);
-        console.log('routeData', routeData);
+        const queryFormater = new _Sanity.QueryFormater();
+        const routeData = (await queryFormater.queryCurrentRoute()).getCurrentRouteData();
+        const sectionsData = queryFormater.getCurrentRouteSectionArray();
+        setCurrentSections(sectionsData);
         setQueriedBodyData(routeData);
       })();
     }
-  }, [hasPathChanged, currentRoute]);
+  }, [hasPathChanged, currentRoute]); //#region Rendoring
 
   if (!_Sanity.sanityStore.getState()) {
     if (Loading) return /*#__PURE__*/_react.default.createElement(Loading, null);else return /*#__PURE__*/_react.default.createElement("div", null, "Loading");
@@ -94,9 +103,10 @@ function LayouterProvider(_ref) {
 
   const value = {
     client,
-    options
+    options,
+    currentSections
   };
   return /*#__PURE__*/_react.default.createElement(layouterContext.Provider, {
     value: value
-  }, children);
+  }, children); //#endregion
 }

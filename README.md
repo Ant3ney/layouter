@@ -22,6 +22,25 @@ import { Provider, Body } from 'layouter-tools';
 function App() {
 	const layouterToolsOptions = {
 		PUBLIC_API_KEY: 'bjwi19ta',
+		sectionMap: [
+			{
+				section: 'landingScreenSection',
+				component: () => {
+					return <div>This is the Landing section</div>;
+				},
+			},
+			{
+				section: 'funnelItem01Section',
+				component: () => {
+					return <div>This is the Funnel section</div>;
+				},
+			},
+			{
+				section: 'shopDisplaySection',
+				component: () => {
+					return <div>This is the shop section</div>;
+				},
+			},
 	};
 }
 
@@ -32,9 +51,6 @@ export default App;
 
 ```javascript
 function App() {
-	const layouterToolsOptions = {
-		PUBLIC_API_KEY: '******',
-	};
 	return (
 		<div className='App'>
 			<Provider options={layouterToolsOptions}>
@@ -58,6 +74,25 @@ import { Provider, Body } from 'layouter-tools';
 function App() {
 	const layouterToolsOptions = {
 		PUBLIC_API_KEY: '******',
+		sectionMap: [
+			{
+				section: 'landingScreenSection',
+				component: () => {
+					return <div>This is the Landing section</div>;
+				},
+			},
+			{
+				section: 'funnelItem01Section',
+				component: () => {
+					return <div>This is the Funnel section</div>;
+				},
+			},
+			{
+				section: 'shopDisplaySection',
+				component: () => {
+					return <div>This is the shop section</div>;
+				},
+			},
 	};
 	return (
 		<div className='App'>

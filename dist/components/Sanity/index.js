@@ -5,7 +5,7 @@ require("core-js/modules/web.dom-collections.iterator.js");
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.sanityStore = exports.queryMainNav = exports.queryCurrentRoute = void 0;
+exports.sanityStore = exports.queryMainNav = exports.queryCurrentRoute = exports.QueryFormater = void 0;
 
 var _Store = _interopRequireDefault(require("./Store"));
 
@@ -23,3 +23,5 @@ const queryCurrentRoute = queryPackage.queryCurrentRoute;
 exports.queryCurrentRoute = queryCurrentRoute;
 const sanityStore = _Store.default;
 exports.sanityStore = sanityStore;
+const QueryFormater = queryPackage.default;
+exports.QueryFormater = QueryFormater;
