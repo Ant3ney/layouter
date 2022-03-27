@@ -13,6 +13,8 @@ export default function LayouterProvider({ children, options }) {
 	const [currentSections, setCurrentSections] = useState();
 	let hasPathChanged = useHasChanged(currentRoute);
 
+	/* This is a React Hook that subscribes to the `sanityStore` and sets the `client` state to the
+	`sanityStore`'s `client` state. */
 	useEffect(() => {
 		const unsubClient = sanityStore.subscribe(() => {
 			setClient(sanityStore.getState().client);
@@ -21,8 +23,10 @@ export default function LayouterProvider({ children, options }) {
 			unsubClient();
 		};
 	}, [client]);
+
 	useEffect(() => {
 		const unsubSanityStore = sanityStore.subscribe(async () => {
+			/* Run inital setters in ths context */
 			if (sanityStore.getState().client) {
 				const navData = await queryMainNav();
 				setNav(navData);
@@ -34,7 +38,7 @@ export default function LayouterProvider({ children, options }) {
 		};
 	}, []);
 
-	//Keeps state route up to date with store route
+	//Syncs route state to store
 	useEffect(() => {
 		const unsubRoute = routeStore.subscribe(() => {
 			setCurrentRoute(routeStore.getState().currentLocation);
@@ -45,24 +49,27 @@ export default function LayouterProvider({ children, options }) {
 		};
 	}, [currentRoute]);
 
+	/* Route Dependencys syncronization */
 	useEffect(() => {
 		if (hasPathChanged) {
 			(async () => {
 				const queryFormater = new QueryFormater();
 				const routeData = (await queryFormater.queryCurrentRoute()).getCurrentRouteData();
 				const sectionsData = queryFormater.getCurrentRouteSectionArray();
+
 				setCurrentSections(sectionsData);
 				setQueriedBodyData(routeData);
 			})();
 		}
 	}, [hasPathChanged, currentRoute]);
 
+	//#region Rendoring
 	if (!sanityStore.getState()) {
 		if (Loading) return <Loading />;
 		else return <div>Loading</div>;
 	}
 
 	const value = { client, options, currentSections };
-
 	return <layouterContext.Provider value={value}>{children}</layouterContext.Provider>;
+	//#endregion
 }
