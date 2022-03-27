@@ -4,8 +4,69 @@ A package designed to save time in connecting your CMS app layouts to your arran
 
 ## Install
 
-bash
-
-```
+```bash
 npm -i --save layouter-tools
+```
+
+## Usage
+
+### Import nessisary dependencies
+
+```javascript
+import { Provider, Body } from 'layouter-tools';
+```
+
+### Define the layouterToolsOptions variable
+
+```javascript
+function App() {
+	const layouterToolsOptions = {
+		PUBLIC_API_KEY: 'bjwi19ta',
+	};
+}
+
+export default App;
+```
+
+### Use layouterToolsOptions as a prop for the Provider component
+
+```javascript
+function App() {
+	const layouterToolsOptions = {
+		PUBLIC_API_KEY: 'bjwi19ta',
+	};
+	return (
+		<div className='App'>
+			<Provider options={layouterToolsOptions}>
+				<Body />
+			</Provider>
+		</div>
+	);
+}
+
+export default App;
+```
+
+### Entire Usage example
+
+```javascript
+//App.js of Create React app
+import logo from './logo.svg';
+import './App.css';
+import { Provider, Body } from 'layouter-tools';
+
+function App() {
+	const layouterToolsOptions = {
+		PUBLIC_API_KEY: 'bjwi19ta',
+	};
+	return (
+		<div className='App'>
+			<Provider options={layouterToolsOptions}>
+				<Body />
+			</Provider>
+		</div>
+	);
+}
+
+export default App;
 ```
