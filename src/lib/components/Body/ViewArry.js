@@ -7,7 +7,7 @@ export default function View() {
 		return <div>Loading</div>;
 	}
 	return (
-		<div>
+		<div className='layouter-body-continer'>
 			{currentSections.map((currentSection, i) => {
 				const currentComponentSectionMapData = options.sectionMap.find(section => {
 					return currentSection._type === section.section;
@@ -20,7 +20,6 @@ export default function View() {
 
 				return <CurrentComponent {...props} key={i} />;
 			})}
-			This is the layouter body
 		</div>
 	);
 }
