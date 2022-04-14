@@ -31,7 +31,9 @@ function View() {
     return /*#__PURE__*/_react.default.createElement("div", null, "Loading");
   }
 
-  return /*#__PURE__*/_react.default.createElement("div", null, currentSections.map((currentSection, i) => {
+  return /*#__PURE__*/_react.default.createElement("div", {
+    className: "layouter-body-continer"
+  }, currentSections.map((currentSection, i) => {
     const currentComponentSectionMapData = options.sectionMap.find(section => {
       return currentSection._type === section.section;
     });
@@ -41,5 +43,5 @@ function View() {
     return /*#__PURE__*/_react.default.createElement(CurrentComponent, _extends({}, props, {
       key: i
     }));
-  }), "This is the layouter body");
+  }));
 }
