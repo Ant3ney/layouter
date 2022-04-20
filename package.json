@@ -1,6 +1,6 @@
 {
 	"name": "layouter-tools",
-	"version": "0.1.7",
+	"version": "0.2.3",
 	"private": false,
 	"main": "dist/index.js",
 	"module": "dist/index.js",
@@ -15,6 +15,7 @@
 		"@types/node": "^16.11.26",
 		"@types/react": "^17.0.40",
 		"@types/react-dom": "^17.0.13",
+		"core-js": "^3.22.0",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-scripts": "5.0.0",

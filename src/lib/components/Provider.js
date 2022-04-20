@@ -2,9 +2,9 @@ import React, { createContext, useEffect, useState, useRef } from 'react';
 import routeStore from './routeStore';
 import { sanityStore, queryMainNav, queryCurrentRoute, QueryFormater } from './Sanity';
 import { useHasChanged } from './utilities';
-export const layouterContext = createContext(null);
+export const layouterContext = createContext({});
 export default function LayouterProvider({ children, options }) {
-	const { PUBLIC_API_KEY, Loading } = options;
+	const { PUBLIC_API_KEY, dataset, Loading } = options;
 	const [currentRoute, setCurrentRoute] = useState(routeStore.getState().currentLocation);
 	const [client, setClient] = useState(sanityStore.getState() ? sanityStore.getState().client : null);
 	const [bodyKeys, setBodyKeys] = useState(null);
@@ -32,7 +32,7 @@ export default function LayouterProvider({ children, options }) {
 				setNav(navData);
 			}
 		});
-		sanityStore.dispatch({ type: 'update client via PUBLIC_API_KEY', PUBLIC_API_KEY });
+		sanityStore.dispatch({ type: 'update client credentials', credentials: { PUBLIC_API_KEY, dataset } });
 		return () => {
 			unsubSanityStore();
 		};
@@ -54,11 +54,13 @@ export default function LayouterProvider({ children, options }) {
 		if (hasPathChanged) {
 			(async () => {
 				const queryFormater = new QueryFormater();
-				const routeData = (await queryFormater.queryCurrentRoute()).getCurrentRouteData();
-				const sectionsData = queryFormater.getCurrentRouteSectionArray();
+				const routeData = (await queryFormater.queryCurrentRoute(currentRoute)).getCurrentRouteData();
+				const sectionsData = (await queryFormater).getCurrentRouteSectionArray();
 
 				setCurrentSections(sectionsData);
 				setQueriedBodyData(routeData);
+
+				console.log('Detected route change.', 'sectionsData:', sectionsData, 'routeData:', routeData);
 			})();
 		}
 	}, [hasPathChanged, currentRoute]);
@@ -69,7 +71,7 @@ export default function LayouterProvider({ children, options }) {
 		else return <div>Loading</div>;
 	}
 
-	const value = { client, options, currentSections };
+	const value = { client, options, currentSections, routeStore };
 	return <layouterContext.Provider value={value}>{children}</layouterContext.Provider>;
 	//#endregion
 }

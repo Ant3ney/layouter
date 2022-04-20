@@ -7,8 +7,10 @@ function reducer(state = {}, newState) {
 			state.client = newState.client;
 			break;
 		case 'update client via PUBLIC_API_KEY':
-			state.client = CreateSanityClient(newState.PUBLIC_API_KEY);
+			state.client = CreateSanityClient({ PUBLIC_API_KEY: newState.PUBLIC_API_KEY });
 			break;
+		case 'update client credentials':
+			state.client = CreateSanityClient(newState.credentials);
 		default:
 			console.log(`No action defined for type: ${newState.type}`);
 	}

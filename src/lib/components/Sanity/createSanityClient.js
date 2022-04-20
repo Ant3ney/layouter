@@ -1,11 +1,14 @@
 const sanityClient = require('@sanity/client');
 
-function CreateSanityClient(PUBLIC_API_KEY) {
+function CreateSanityClient(credentials) {
+	let { PUBLIC_API_KEY, dataset } = credentials;
+	if (!PUBLIC_API_KEY) console.error('PUBLIC_API_KEY must be defined when creating a sanity client');
+	dataset = dataset || 'production';
 	return sanityClient({
 		projectId: PUBLIC_API_KEY,
-		dataset: 'production',
-		apiVersion: '2021-03-25', // use current UTC date - see "specifying API version"!
-		useCdn: true, // `false` if you want to ensure fresh data
+		dataset,
+		apiVersion: '2021-03-25',
+		useCdn: true,
 	});
 }
 

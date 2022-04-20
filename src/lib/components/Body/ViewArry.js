@@ -18,7 +18,7 @@ export default function View() {
 
 				const props = currentSection;
 
-				return <CurrentComponent {...props} key={i} />;
+				return <CurrentComponent {...props} firstComp={i === 0} key={i} />;
 			})}
 		</div>
 	);
