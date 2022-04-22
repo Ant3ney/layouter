@@ -78,8 +78,8 @@ export default function LayouterProvider({ children, options }) {
 		currentSections,
 		routeStore,
 		nav,
-		leftNav: nav.leftNavMenu,
-		rightNav: nav.rightNavMenu,
+		leftNav: nav?.leftNavMenu,
+		rightNav: nav?.rightNavMenu,
 	};
 	return <layouterContext.Provider value={value}>{children}</layouterContext.Provider>;
 	//#endregion

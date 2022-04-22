@@ -16,7 +16,6 @@ function standardQueryRunner(query, settings) {
 
   return new Promise((res, rej) => {
     if (client) client.fetch(query).then(response => {
-      console.log(response);
       if (settings.noArray) res(response[0]);else res(response);
     }).catch(err => {
       rej(err);

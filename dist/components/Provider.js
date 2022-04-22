@@ -113,7 +113,9 @@ function LayouterProvider(_ref) {
     options,
     currentSections,
     routeStore: _routeStore.default,
-    nav
+    nav,
+    leftNav: nav.leftNavMenu,
+    rightNav: nav.rightNavMenu
   };
   return /*#__PURE__*/_react.default.createElement(layouterContext.Provider, {
     value: value
