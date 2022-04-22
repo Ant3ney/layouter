@@ -25,7 +25,6 @@ function View() {
     currentSections,
     options
   } = (0, _react.useContext)(_Provider.layouterContext);
-  console.log(currentSections, options);
 
   if (!currentSections || !options || !options.sectionMap) {
     return /*#__PURE__*/_react.default.createElement("div", null, "Loading");
@@ -37,7 +36,7 @@ function View() {
     const currentComponentSectionMapData = options.sectionMap.find(section => {
       return currentSection._type === section.section;
     });
-    if (!currentComponentSectionMapData) return /*#__PURE__*/_react.default.createElement("div", null, "No Components found for this route");
+    if (!currentComponentSectionMapData) return /*#__PURE__*/_react.default.createElement("div", null, "No Component found section of type ", currentSection._type);
     const CurrentComponent = currentComponentSectionMapData.component;
     const props = currentSection;
     return /*#__PURE__*/_react.default.createElement(CurrentComponent, _extends({}, props, {

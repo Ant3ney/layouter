@@ -15,6 +15,7 @@ var _QueryFormater = _interopRequireDefault(require("./QueryFormater"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+//TODO: Change all querys to listeners
 const queryMainNav = _queryMainNav.default;
 exports.queryMainNav = queryMainNav;
 const queryCurrentRoute = _queryCurrentRoute.default;

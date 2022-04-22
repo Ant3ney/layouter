@@ -89,6 +89,8 @@ function LayouterProvider(_ref) {
   }, [currentRoute]);
   /* Route Dependencys syncronization */
 
+  /* TODO: Add case handling for when the home page is not defined */
+
   (0, _react.useEffect)(() => {
     if (hasPathChanged) {
       (async () => {
@@ -110,7 +112,8 @@ function LayouterProvider(_ref) {
     client,
     options,
     currentSections,
-    routeStore: _routeStore.default
+    routeStore: _routeStore.default,
+    nav
   };
   return /*#__PURE__*/_react.default.createElement(layouterContext.Provider, {
     value: value

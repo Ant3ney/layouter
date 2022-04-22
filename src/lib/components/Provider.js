@@ -72,7 +72,15 @@ export default function LayouterProvider({ children, options }) {
 		else return <div>Loading</div>;
 	}
 
-	const value = { client, options, currentSections, routeStore, nav };
+	const value = {
+		client,
+		options,
+		currentSections,
+		routeStore,
+		nav,
+		leftNav: nav.leftNavMenu,
+		rightNav: nav.rightNavMenu,
+	};
 	return <layouterContext.Provider value={value}>{children}</layouterContext.Provider>;
 	//#endregion
 }
