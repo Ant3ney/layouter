@@ -7,6 +7,7 @@ export default function standardQueryRunner(query, settings) {
 			client
 				.fetch(query)
 				.then(response => {
+					console.log(response);
 					if (settings.noArray) res(response[0]);
 					else res(response);
 				})

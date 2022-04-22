@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import { layouterContext } from '../Provider';
 export default function View() {
 	const { client, currentSections, options } = useContext(layouterContext);
-	console.log(currentSections, options);
 	if (!currentSections || !options || !options.sectionMap) {
 		return <div>Loading</div>;
 	}
@@ -12,7 +11,8 @@ export default function View() {
 				const currentComponentSectionMapData = options.sectionMap.find(section => {
 					return currentSection._type === section.section;
 				});
-				if (!currentComponentSectionMapData) return <div>No Components found for this route</div>;
+				if (!currentComponentSectionMapData)
+					return <div>No Component found section of type {currentSection._type}</div>;
 
 				const CurrentComponent = currentComponentSectionMapData.component;
 

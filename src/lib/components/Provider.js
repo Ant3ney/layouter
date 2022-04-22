@@ -50,6 +50,7 @@ export default function LayouterProvider({ children, options }) {
 	}, [currentRoute]);
 
 	/* Route Dependencys syncronization */
+	/* TODO: Add case handling for when the home page is not defined */
 	useEffect(() => {
 		if (hasPathChanged) {
 			(async () => {
@@ -71,7 +72,7 @@ export default function LayouterProvider({ children, options }) {
 		else return <div>Loading</div>;
 	}
 
-	const value = { client, options, currentSections, routeStore };
+	const value = { client, options, currentSections, routeStore, nav };
 	return <layouterContext.Provider value={value}>{children}</layouterContext.Provider>;
 	//#endregion
 }

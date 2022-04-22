@@ -10,7 +10,6 @@ function App() {
 	const layouterToolsOptions = {
 		PUBLIC_API_KEY: 'bjwi19ta',
 		dataset: 'development',
-		/* TODO: come up with a really good name for sectionMap and define it in many places in the code*/
 		sectionMap: [
 			{
 				section: 'landingScreenSection',

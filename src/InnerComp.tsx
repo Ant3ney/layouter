@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import { layouterContext } from './lib';
 export default function InnerComp() {
-	const { routeStore } = useContext<any>(layouterContext);
+	const { routeStore, nav } = useContext<any>(layouterContext);
+	console.log(nav);
 	return (
 		<div>
 			<h1>This is the real comp</h1>
