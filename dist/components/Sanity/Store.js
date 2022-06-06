@@ -30,7 +30,7 @@ function reducer() {
       state.client = (0, _createSanityClient.default)(newState.credentials);
 
     default:
-      console.log("No action defined for type: ".concat(newState.type));
+      break;
   }
 
   return state;

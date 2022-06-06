@@ -60,8 +60,6 @@ export default function LayouterProvider({ children, options }) {
 
 				setCurrentSections(sectionsData);
 				setQueriedBodyData(routeData);
-
-				console.log('Detected route change.', 'sectionsData:', sectionsData, 'routeData:', routeData);
 			})();
 		}
 	}, [hasPathChanged, currentRoute]);
@@ -78,8 +76,6 @@ export default function LayouterProvider({ children, options }) {
 		currentSections,
 		routeStore,
 		nav,
-		leftNav: nav?.leftNavMenu,
-		rightNav: nav?.rightNavMenu,
 	};
 	return <layouterContext.Provider value={value}>{children}</layouterContext.Provider>;
 	//#endregion

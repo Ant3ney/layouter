@@ -12,7 +12,7 @@ function reducer(state = {}, newState) {
 		case 'update client credentials':
 			state.client = CreateSanityClient(newState.credentials);
 		default:
-			console.log(`No action defined for type: ${newState.type}`);
+			break;
 	}
 
 	return state;

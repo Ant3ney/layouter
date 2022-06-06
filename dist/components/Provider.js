@@ -99,7 +99,6 @@ function LayouterProvider(_ref) {
         const sectionsData = (await queryFormater).getCurrentRouteSectionArray();
         setCurrentSections(sectionsData);
         setQueriedBodyData(routeData);
-        console.log('Detected route change.', 'sectionsData:', sectionsData, 'routeData:', routeData);
       })();
     }
   }, [hasPathChanged, currentRoute]); //#region Rendoring
@@ -113,9 +112,7 @@ function LayouterProvider(_ref) {
     options,
     currentSections,
     routeStore: _routeStore.default,
-    nav,
-    leftNav: nav.leftNavMenu,
-    rightNav: nav.rightNavMenu
+    nav
   };
   return /*#__PURE__*/_react.default.createElement(layouterContext.Provider, {
     value: value
