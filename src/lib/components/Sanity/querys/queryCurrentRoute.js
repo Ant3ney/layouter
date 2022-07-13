@@ -3,6 +3,7 @@ import queryHomePage from './queryHomePage';
 
 export default async function (currentRoute) {
 	currentRoute = currentRoute || window.location.pathname;
+	currentRoute = currentRoute.split('?')[0];
 	if (currentRoute === '/') {
 		return (await queryHomePage()).homePage;
 	}

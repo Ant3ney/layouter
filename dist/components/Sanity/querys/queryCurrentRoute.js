@@ -19,6 +19,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 async function _default(currentRoute) {
   currentRoute = currentRoute || window.location.pathname;
+  currentRoute = currentRoute.split('?')[0];
 
   if (currentRoute === '/') {
     return (await (0, _queryHomePage.default)()).homePage;
