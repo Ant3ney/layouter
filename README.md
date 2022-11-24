@@ -41,6 +41,7 @@ function App() {
 					return <div>This is the shop section</div>;
 				},
 			},
+		],
 	};
 }
 
